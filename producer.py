@@ -23,11 +23,11 @@ channel.queue_bind(exchange='send_info', queue='phone_queue')
 
 
 def main():
-    # fake = Faker()
-    # send_by = ("email", "phone")
-    # for i in range(10):
-    #     Contacts(email=fake.email(), name=fake.name(),
-    #              phone=fake.phone_number(), send_type=random.choice(send_by)).save()
+    fake = Faker()
+    send_by = ("email", "phone")
+    for i in range(10):
+        Contacts(email=fake.email(), name=fake.name(),
+                 phone=fake.phone_number(), send_type=random.choice(send_by)).save()
 
     contacts = Contacts.objects(done=False)
     for contact in contacts:
