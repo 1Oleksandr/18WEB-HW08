@@ -1,7 +1,11 @@
-import pika
-
 import time
 import json
+
+import connect
+from mongoengine import *
+import pika
+
+from model_contact import Contacts
 
 credentials = pika.PlainCredentials('guest', 'guest')
 connection = pika.BlockingConnection(
@@ -16,6 +20,8 @@ def callback(ch, method, properties, body):
     message = json.loads(body.decode())
     print(f" [x] Received {message}")
     time.sleep(1)
+    contact = Contacts.objects(id=message['ObjectId']).first()
+    contact.update(done=True)
     print(f" [x] Done: {method.delivery_tag}")
     ch.basic_ack(delivery_tag=method.delivery_tag)
 

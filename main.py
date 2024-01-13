@@ -27,17 +27,18 @@ def parcer(text: str):
 
 @cache
 def seek_author(data):
-    author = Authors.objects(name__istartswith=data).first()
-    if author is None:
+    authors = Authors.objects(name__istartswith=data)
+    if authors.first() is None:
         res = f"We don't have quotes with author {data}"
         return res
     else:
-        notes = Quotes.objects(author=author.id)
         res = []
-        for note in notes:
-            tags = [tag.name for tag in note.tags]
-            res.append(
-                f"Author: {author.name} Quote: {note.title} tags: {tags}")
+        for author in authors:
+            notes = Quotes.objects(author=author.id)
+            for note in notes:
+                tags = [tag.name for tag in note.tags]
+                res.append(
+                    f"Author: {author.name} Quote: {note.title} tags: {tags}")
         return res
 
 
